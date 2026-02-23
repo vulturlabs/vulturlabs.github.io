@@ -2,3 +2,5 @@ liquid:
   error_mode: warn
 kramdown:
   parse_block_html: true
+plugins:
+  - jekyll-seo-tag

@@ -1,6 +1,7 @@
 ---
 layout: custom-post
 title: "An interview with W1kkid, the Substack breach author"
+description: "A short overview of the recent Substack data breach, followed by an interview with the alledged author: W1kkid"
 thumbnail: /assets/images/substack/bf_avatar.png
 color: blue
 ---
