@@ -1,0 +1,77 @@
+---
+layout: default
+title: VulturLabs
+---
+
+<div class="home">
+  <h1 class="mono">VulturLabs</h1>
+  <div class="main-figure">
+    <figure>
+      <img src="/assets/images/vulture_bg.png" />
+    </figure>
+    <div class="background"></div>
+  </div>
+
+  <p>POSTS [ {{ site.posts.size }} ]</p>
+  <ul>
+    {% for post in site.posts %}
+    <a href="{{ post.url }}"
+      ><li class="{{post.color}}">
+        <figure>
+          <img src="{{post.thumbnail}}" />
+        </figure>
+        <div class="content">
+          <h3 class="mono">{{ post.title }}</h3>
+          <p class="date">{{post.date | date: "%d %b %Y"}}</p>
+        </div>
+        <p class="mono arrow">»</p>
+      </li></a
+    >
+
+    {% endfor %}
+  </ul>
+</div>
+<script>
+  const seed = +new Date("2026-02-23").getTime();
+
+  const N = 24;
+
+  function splitmix32(a) {
+    return function () {
+      a |= 0;
+      a = (a + 0x9e3779b9) | 0;
+      let t = a ^ (a >>> 16);
+      t = Math.imul(t, 0x21f0aaad);
+      t = t ^ (t >>> 15);
+      t = Math.imul(t, 0x735a2d97);
+      return ((t = t ^ (t >>> 15)) >>> 0) / 4294967296;
+    };
+  }
+
+  function generateNoise() {
+    const background = document.querySelector(".background");
+    const thiccness = N / 8;
+    const margin1 = thiccness;
+    const margin2 = N - thiccness;
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        const div = document.createElement("div");
+        div.classList.add("cell");
+        const r = prng();
+        if (i < margin1 || i >= margin2 || j < margin1 || j >= margin2) {
+          if (r < 0.5) {
+            div.classList.add("highlight");
+          }
+        } else {
+          if (r < 0.05) {
+            div.classList.add("highlight");
+          }
+        }
+        background.appendChild(div);
+      }
+    }
+  }
+  // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+  const prng = splitmix32(seed);
+  generateNoise();
+</script>

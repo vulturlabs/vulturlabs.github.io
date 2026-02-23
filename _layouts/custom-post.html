@@ -1,0 +1,100 @@
+---
+layout: default
+---
+
+<div class="post {{page.color}}">
+  
+  <main>
+    <a class="mono back" href="/">« Home</a>
+    <div class="top">
+      <figure>
+        <img src="{{page.thumbnail}}" />
+      </figure>
+      <div class="background"></div>
+      <header>
+        <p>{{page.date | date: "%d %b %Y"}}</p>
+        <h1>{{ page.title }}</h1>
+      </header>
+    </div>
+    <input type="hidden" id="seed" value="{{ page.date | date: "%s"}}"/>
+    {{ content }}
+  </main>
+  <nav>
+    <div class="wrapper">
+      <p class="mono">Contents</p>
+      <!-- https://github.com/allejo/jekyll-toc  -->
+      {% include toc.html html=content %}
+      <p class="mono">Share</p>
+      <div class="share">
+        <a href="https://twitter.com/intent/tweet?url={{ site.url }}{{ page.url }}&title={{ page.title }}" target="_blank" rel="nofollow noopener">{% include x-icon.html %}</a>
+        <a href="https://www.linkedin.com/shareArticle?url={{ site.url }}{{ page.url }}&title={{ page.title }}" target="_blank" rel="nofollow noopener">{% include linkedin-icon.html %}</a>
+        <button id="copy-link">{% include link-icon.html %}</button>
+      </div>
+    </div>
+    
+  </nav>
+</div>
+<script>
+
+    const seed = +document.getElementById("seed").value;
+
+    const N = 24;
+
+    function splitmix32(a) {
+      return function() {
+        a |= 0;
+        a = a + 0x9e3779b9 | 0;
+        let t = a ^ a >>> 16;
+        t = Math.imul(t, 0x21f0aaad);
+        t = t ^ t >>> 15;
+        t = Math.imul(t, 0x735a2d97);
+        return ((t = t ^ t >>> 15) >>> 0) / 4294967296;
+        }
+      }
+
+    function generateNoise() {
+        const background = document.querySelector(".background");
+        const half = N/2;
+        const part1 = half + N/8;
+        const part2 = half - N/8;
+        const last = N - N/8;
+        for (let i = 0; i < N; i++) {
+            for (let j = 0; j < N; j++) {
+                const div = document.createElement("div");
+                div.classList.add("cell");
+                if (i  >= part1 && i < last) {
+                  div.classList.add("highlight");
+                } else if (i >= part2 && i < part1) {
+                  const r = prng();
+                  const t = i >= half ? 0.75 : 0.35;
+                  if (r < t) {
+                    div.classList.add("highlight");
+                  }
+                } else if (i < part2) {
+                  const r = prng();
+                  if (r < 0.02) {
+                    div.classList.add("highlight");
+                  }
+                } else if (i >= last) {
+                  const r = prng();
+                  if (r < 0.95) {
+                    div.classList.add("highlight");
+                  }
+                }
+                background.appendChild(div);
+            }
+        }
+    }
+    // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+    const prng = splitmix32(seed);
+    generateNoise();
+
+    const copyLinkButton = document.getElementById("copy-link");
+    copyLinkButton.addEventListener("click", copyLink);
+
+    function copyLink() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url);
+    }
+
+</script>
