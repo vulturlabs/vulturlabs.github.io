@@ -1,3 +1,5 @@
+title: "VulturLabs"
+name: "VulturLabs"
 liquid:
   error_mode: warn
 kramdown:
