@@ -77,6 +77,10 @@ h6 {
   --accent: var(--blue);
 }
 
+.green {
+  --accent: var(--green);
+}
+
 body {
   font-family: "Atkinson Hyperlegible", sans-serif;
   font-weight: 400;

@@ -55,6 +55,7 @@
 
 .post nav .share {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -62,11 +63,15 @@
 .post nav .share a,
 .post nav .share button {
   border: 1px solid var(--white);
-  padding: 0.5rem;
+  width: 41px;
+  height: 41px;
   border-radius: 5px;
   background-color: inherit;
   outline: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .post nav .share a:hover,
